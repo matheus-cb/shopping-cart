@@ -22,11 +22,11 @@ describe('Teste a função fetchProductsList', () => {
   });
 
   it('Teste se o retorno da função fetchProductsList com o argumento "computador" é uma estrutura de dados igual ao objeto computadorSearch, que já está importado no arquivo.', async () => {
-    // .toReturnWith(value) para garantir que a mock retorne um valor específico
     const expected = await fetchProductsList('computador');
-    expect(expected).toReturnWith(computadorSearch);
+    expect(expected).toEqual(computadorSearch);
   });
   it('Teste se, ao chamar a função fetchProductsList sem argumento, retorna um erro com a mensagem: "Termo de busca não informado".', async () => {
-    expect(error.message).toBe('Termo de busca não informado');
+    const expected = await fetchProductsList();
+    expect(expected).toEqual(new Error('Termo de busca não informado'));
   });
 });
