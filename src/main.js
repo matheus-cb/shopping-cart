@@ -5,6 +5,7 @@ import { createProductElement } from './helpers/shopFunctions';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
 
+// cria mensagem de carregando
 const loadProducts = () => {
   const sectionMain = document.querySelector('.products');
   const div = document.createElement('div');
@@ -13,12 +14,13 @@ const loadProducts = () => {
   sectionMain.appendChild(div);
 };
 
+// remove mensagem de carregando
 const loaded = () => {
   const divC = document.querySelector('.loading');
-  console.log(divC);
   divC.remove();
 };
 
+// chama as funções loadProfucts e loaded, e também mostra os produtos na tela
 const displayProducts = async () => {
   loadProducts();
   // cria uma variável que contem uma lista de objetos
