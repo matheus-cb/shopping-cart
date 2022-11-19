@@ -1,5 +1,11 @@
-export const fetchProduct = () => {
-  // seu código aqui
+export const fetchProduct = async (id) => {
+  if (!id) {
+    throw new Error('ID não informado');
+  }
+
+  const result = await fetch(`https://api.mercadolibre.com/items/${id}`);
+  const product = await result.json();
+  return product;
 };
 
 export const fetchProductsList = async (keyword) => {
@@ -7,12 +13,8 @@ export const fetchProductsList = async (keyword) => {
     throw new Error('Termo de busca não informado');
   }
 
-  try {
-    const result = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${keyword}`);
-    const obj = await result.json();
-    const arr = obj.results;
-    return arr;
-  } catch (error) {
-    return error.message;
-  }
+  const result = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${keyword}`);
+  const obj = await result.json();
+  const arr = obj.results;
+  return arr;
 };
