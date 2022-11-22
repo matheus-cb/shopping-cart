@@ -1,7 +1,8 @@
 import { searchCep } from './helpers/cepFunctions';
 import './style.css';
 import { fetchProduct, fetchProductsList } from './helpers/fetchFunctions';
-import { createProductElement } from './helpers/shopFunctions';
+import { createProductElement, createCartProductElement } from './helpers/shopFunctions';
+import { saveCartID } from './helpers/cartFunctions';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
 
@@ -42,7 +43,31 @@ const displayProducts = async () => {
   loaded();
 };
 
+// adiciona os produtos ao carrinho de compras
+const addProductsToLS = async () => {
+  // capitura o botão adicionar ao carrinho
+  const btnProducts = document.querySelectorAll('.product__add');
+  btnProducts.forEach((element, i) => {
+    element.addEventListener('click', async () => {
+      const productId = document.querySelectorAll('.product__id');
+      saveCartID(productId[i].innerText);
+      const id = element.parentElement.firstElementChild.innerHTML;
+      const product = await fetchProduct(id);
+      const li = createCartProductElement(product);
+      const carrinho = document.querySelector('.cart__products');
+      carrinho.appendChild(li);
+    });
+  });
+};
+
+// adiciona o produto do local storage para o carrinho
+const addProductsToCart = () => {
+  const productsLS = localStorage.cartProducts;
+  console.log(productsLS);
+};
+
 window.onload = async () => {
   await displayProducts();
-  fetchProduct('MLB1405519561');
+  await addProductsToLS();
+  addProductsToCart();
 };

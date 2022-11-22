@@ -84,6 +84,7 @@ export const createCartProductElement = ({ id, title, price, pictures }) => {
     'i',
     'material-icons cart__product__remove',
     'delete',
+    // removeCartID(),
   );
   li.appendChild(removeButton);
 
