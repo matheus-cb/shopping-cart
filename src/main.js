@@ -22,13 +22,15 @@ const loaded = () => {
 };
 
 // chama as funções loadProfucts e loaded, e também mostra os produtos na tela
-const displayProducts = async () => {
+const displayProducts = async (searchTerm) => {
+  // seleciona o local que será o pai da lista dos produtos
+  const sectionProducts = document.querySelector('.products');
+  sectionProducts.innerHTML = ''; // Isso limpará todos os elementos filhos da lista de produtos.
   loadProducts();
   try {
     // cria uma variável que contem uma lista de objetos
-    const listObj = await fetchProductsList('computador');
-    // seleciona o local que será o pai da lista dos produtos
-    const sectionProducts = document.querySelector('.products');
+    const listObj = await fetchProductsList(searchTerm);
+
     // para cada elemento da lista de obj cria uma section com descrições, img e preço do produto ...
     listObj.forEach((element) => {
       sectionProducts.appendChild(createProductElement(element));
@@ -42,6 +44,21 @@ const displayProducts = async () => {
   }
   loaded();
 };
+
+// Função para lidar com a busca
+const handleSearch = async () => {
+  const searchInput = document.querySelector('.search-input');
+  const searchTerm = searchInput.value.trim(); // Obtém o texto de busca e remove espaços em branco extras
+
+  if (searchTerm !== '') {
+    // Chame displayProducts com o termo de busca
+    await displayProducts(searchTerm);
+  }
+};
+
+// Adicione um ouvinte de evento de clique ao botão de busca
+const searchButton = document.querySelector('.search-button');
+searchButton.addEventListener('click', handleSearch);
 
 // seleciona local para os produtos
 const selectSpaceCart = (product) => {
@@ -83,7 +100,7 @@ const addProductsToLS = () => {
 };
 
 window.onload = async () => {
-  await displayProducts();
+  await displayProducts('computador');
   await addProducts();
   addProductsToLS();
 };
