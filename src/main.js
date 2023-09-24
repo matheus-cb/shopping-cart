@@ -69,19 +69,23 @@ const selectSpaceCart = (product) => {
 
 // adiciona os produtos ao carrinho de compras e ao localStorage
 const addProducts = async () => {
-  // capitura os botões deixando eles em um array
-  const btnProducts = document.querySelectorAll('.product__add');
-  btnProducts.forEach((element, i) => {
-    element.addEventListener('click', async () => {
-      // capitura os prdutos deixando eles em um array
-      const productId = document.querySelectorAll('.product__id');
-      // saveCartId para salvar o id do produto ao localStorage
-      saveCartID(productId[i].innerText);
-      // capitura o id e usa a selectSpaceCart() p/ mostrar aonde vai ficar o local dos produtos
-      const id = element.parentElement.firstElementChild.innerHTML;
-      const product = await fetchProduct(id);
+  const productsContainer = document.querySelector('.products');
+
+  productsContainer.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('product__add')) {
+      // Esta parte é acionada quando um botão de adicionar é clicado
+
+      // Obtenha o ID do produto
+      const productId = event.target
+        .parentElement.querySelector('.product__id').innerText;
+
+      // Salve o ID do produto no localStorage
+      saveCartID(productId);
+
+      // Obtenha as informações do produto e adicione ao carrinho
+      const product = await fetchProduct(productId);
       selectSpaceCart(product);
-    });
+    }
   });
 };
 
