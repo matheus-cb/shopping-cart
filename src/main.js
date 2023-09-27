@@ -2,7 +2,7 @@ import { searchCep } from './helpers/cepFunctions';
 import './style.css';
 import { fetchProduct, fetchProductsList } from './helpers/fetchFunctions';
 import { createProductElement, createCartProductElement } from './helpers/shopFunctions';
-import { getSavedCartIDs, saveCartID } from './helpers/cartFunctions';
+import { getSavedCartIDs, saveCartID, updateSubtotal } from './helpers/cartFunctions';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
 
@@ -91,16 +91,16 @@ const addProducts = async () => {
 
 // adiciona o produto do local storage para o carrinho
 const addProductsToLS = () => {
-  // capitura os id's dos produtos no localStrorage
-  const productsLS = localStorage.cartProducts;
   // cria um array com os produtros do localStorage
-  const arrayProducts = getSavedCartIDs(productsLS);
+  const arrayProducts = getSavedCartIDs();
+  // console.log(arrayProducts);
   arrayProducts.map(async (element) => {
     // capitura as infos dos produtros
     const productToArray = await fetchProduct(element);
     // selectSpaceCart() p/ mostrar aonde vai ficar o local dos produtos
     selectSpaceCart(productToArray);
   });
+  updateSubtotal();
 };
 
 window.onload = async () => {
